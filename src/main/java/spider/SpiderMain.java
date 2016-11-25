@@ -6,7 +6,6 @@ import org.apache.log4j.PropertyConfigurator;
 
 import java.net.URLEncoder;
 
-import static spider.WorkCache.result;
 import static spider.WorkCache.taskQueue;
 
 /**
