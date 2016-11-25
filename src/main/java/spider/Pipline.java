@@ -1,37 +1,41 @@
 package spider;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static spider.WorkCache.result;
 
 /**
  * Created by tcf24 on 2016/11/24.
  */
 public class Pipline implements Runnable{
     public String name;
-    public List<String> list ;
+    public static final Log LOG = LogFactory.getLog(Pipline.class);
 
-    public Pipline(String name, List<String> list) {
+    public Pipline(String name) {
         this.name = name;
-        this.list = list;
     }
 
     @Override
     public void run() {
         while (true){
             try {
-                if (list.size() <= 0){
-                    Thread.sleep(600 * 000);
+                if (result.size() <= 0){
+                    LOG.info("result size is 0 wait 60 second ");
+                    Thread.sleep(60 * 1000);
                     continue;
                 }
 
-                FileUtils.writeLines(new File("target/datasave.txt"),list,true);
-                list.clear();
+                FileUtils.writeLines(new File("target/datasave.txt"),result,true);
+                LOG.info(result.size() + " results has save to disk..  waiting 60 second ..");
+                result.clear();
 
-
-                Thread.sleep(60 * 000);
+                Thread.sleep(60 * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (IOException e) {

@@ -1,5 +1,9 @@
 package spider;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.PropertyConfigurator;
+
 import java.net.URLEncoder;
 
 import static spider.WorkCache.result;
@@ -9,11 +13,15 @@ import static spider.WorkCache.taskQueue;
  * Created by tcf24 on 2016/11/24.
  */
 public class SpiderMain {
+    private static final Log LOG = LogFactory.getLog(SpiderMain.class);
 
     public static void main(String[] args) {
-        SpiderMain main = new SpiderMain();
+        String logPath = SpiderMain.class.getClassLoader().getResource("log4j.properties").getFile();
+        PropertyConfigurator.configureAndWatch(logPath);
+
         try {
-            main.getTask();
+            //加载任务
+            getTask();
 
             //启动10 个工作线程
             for (int i = 0; i < 10; i++) {
@@ -22,7 +30,7 @@ public class SpiderMain {
             }
 
             //启动保存线程
-            Thread t = new Thread(new Pipline("pipline",result));
+            Thread t = new Thread(new Pipline("pipline"));
             t.start();
 
         } catch (InterruptedException e) {
@@ -32,7 +40,7 @@ public class SpiderMain {
 
     }
 
-    public void getTask() throws InterruptedException {
+    public static void getTask() throws InterruptedException {
 
         String url = "http://sou.zhaopin.com/jobs/searchresult.ashx?in=121100&jl=@key@&p=@index@";
 
@@ -42,9 +50,7 @@ public class SpiderMain {
             url = url.replace("@index@",i+"");
             taskQueue.put(url);
         }
-
-
-
+        LOG.info("get task number is : " + taskQueue.size());
     }
 
 }

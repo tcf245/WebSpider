@@ -22,7 +22,7 @@ import static spider.WorkCache.result;
 public class WorkThread implements Runnable {
     public String name;
     public BlockingQueue<String> taskQueue = null;
-    public Log LOG = LogFactory.getLog(WorkThread.class);
+    public static final Log LOG = LogFactory.getLog(WorkThread.class);
 
     public WorkThread(String name, BlockingQueue taskQueue) {
         this.name = name;
@@ -34,8 +34,8 @@ public class WorkThread implements Runnable {
         String task = "";
 
         try {
-            System.out.println("task queue size is  ----> " + taskQueue.size());
             while (taskQueue.size() > 0) {
+                LOG.info("task queue size is  ----> " + taskQueue.size());
                 task = taskQueue.take();
                 Document doc = Jsoup.connect(task).get();
                 Elements tables = doc.select("table.newlist");
@@ -58,7 +58,7 @@ public class WorkThread implements Runnable {
                     m.put("area",area);
                     m.put("post_time",post_time);
 
-                    System.out.println("get json result ---->" + gson.toJson(m));
+                    LOG.info("get json result ---->" + gson.toJson(m));
 
                     result.add(gson.toJson(m));
                 }
@@ -67,7 +67,7 @@ public class WorkThread implements Runnable {
 
         } catch(SocketTimeoutException e){
             try {
-                System.out.println("task connect fail. url is : " + task);
+                LOG.info("task connect fail. url is : " + task);
                 taskQueue.put(task);
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
