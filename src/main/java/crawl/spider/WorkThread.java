@@ -1,4 +1,4 @@
-package spider;
+package crawl.spider;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-import static spider.WorkCache.gson;
-import static spider.WorkCache.result;
+import static crawl.spider.WorkCache.gson;
+import static crawl.spider.WorkCache.result;
 
 /**
  * Created by tcf24 on 2016/11/24.

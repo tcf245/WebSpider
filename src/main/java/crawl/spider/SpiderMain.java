@@ -1,4 +1,4 @@
-package spider;
+package crawl.spider;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -6,7 +6,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import java.net.URLEncoder;
 
-import static spider.WorkCache.taskQueue;
+import static crawl.spider.WorkCache.taskQueue;
 
 /**
  * Created by tcf24 on 2016/11/24.

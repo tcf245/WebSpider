@@ -1,4 +1,4 @@
-package spider;
+package crawl.spider;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -6,9 +6,8 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import static spider.WorkCache.result;
+import static crawl.spider.WorkCache.result;
 
 /**
  * Created by tcf24 on 2016/11/24.
