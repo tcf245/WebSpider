@@ -1,4 +1,4 @@
-package crawl.spider;
+package crawl.spider.pipline;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -12,16 +12,22 @@ import static crawl.spider.WorkCache.result;
 /**
  * Created by tcf24 on 2016/11/24.
  */
-public class Pipline implements Runnable{
+public class FilePipline implements Pipline,Runnable{
     public String name;
-    public static final Log LOG = LogFactory.getLog(Pipline.class);
+    public File target;
+    public static final Log LOG = LogFactory.getLog(FilePipline.class);
 
-    public Pipline(String name) {
+    public FilePipline(String name,String target) {
         this.name = name;
+        this.target = new File(target);
     }
 
     @Override
     public void run() {
+        save();
+    }
+
+    public void save() {
         while (true){
             try {
                 if (result.size() <= 0){
@@ -30,7 +36,7 @@ public class Pipline implements Runnable{
                     continue;
                 }
 
-                FileUtils.writeLines(new File("target/datasave.txt"),result,true);
+                FileUtils.writeLines(target,result,true);
                 LOG.info(result.size() + " results has save to disk..  waiting 60 second ..");
                 result.clear();
 

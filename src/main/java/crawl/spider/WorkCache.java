@@ -16,7 +16,4 @@ public class WorkCache {
 
     public static List<String> result = new CopyOnWriteArrayList<>();
 
-
-
-
 }
