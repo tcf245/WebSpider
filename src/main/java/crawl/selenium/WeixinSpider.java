@@ -42,6 +42,7 @@ public class WeixinSpider {
             //翻页 解决问题：  Element is not clickable at point
             action.moveToElement(next).click().perform();
             System.out.printf("this is no.%d page,now tap the next button....",i);
+            System.out.println();
         }
 
     }
