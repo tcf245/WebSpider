@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Created by tcf24 on 2016/11/29.
@@ -26,22 +27,25 @@ public class WeixinSpider {
         browser.switchTo().frame("ptlogin_iframe");
         browser.findElement(By.id("switcher_plogin")).click();
         Thread.sleep(1000);
-        browser.findElement(By.id("u")).sendKeys("2609607316");
-        browser.findElement(By.id("p")).sendKeys("39433956038167");
+        browser.findElement(By.id("u")).sendKeys("QQ");
+        browser.findElement(By.id("p")).sendKeys("PASSWD");
         browser.findElement(By.id("login_button")).click();
 
         Thread.sleep(10000);
+        //wait for element..
+//        new WebDriverWait(browser,500).until();
         browser.findElement(By.id("upquery")).sendKeys("vivo");
         browser.findElement(By.cssSelector("input.swz")).click();
 
 
+        //翻页
         for (int i = 0; i < 100; i++) {
            Thread.sleep(5 * 1000);
             WebElement next = browser.findElement(By.id("sogou_next"));
             Actions action = new Actions(browser);
-            //翻页 解决问题：  Element is not clickable at point
+            //点击下一页按钮 解决问题：  Element is not clickable at point
             action.moveToElement(next).click().perform();
-            System.out.printf("this is no.%d page,now tap the next button....",i);
+            System.out.printf("this is no.%d page , now tap the next button....",i);
             System.out.println();
         }
 
