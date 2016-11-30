@@ -10,17 +10,16 @@ public class WorkerThread implements Runnable {
     public WorkerThread(String name) {
         this.name = name;
         System.out.println(this.name + " has been created.");
-        synchronized (WorkerThread.class){
-            run();
-        }
     }
 
     @Override
     public void run() {
+        synchronized (WorkerThread.class){
             System.out.println(this.name + " get Object lock.");
             while (i < 100) {
                 System.out.println(this.name + " --> " + i++);
             }
-        System.out.println(this.name + " release Object lock..");
+            System.out.println(this.name + " release Object lock..");
+        }
     }
 }
