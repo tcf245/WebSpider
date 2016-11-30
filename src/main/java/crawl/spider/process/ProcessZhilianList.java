@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
-import static crawl.spider.WorkCache.gson;
-import static crawl.spider.WorkCache.result;
+import static crawl.spider.WorkCache.*;
 
 /**
  * Created by tcf24 on 2016/11/24.
@@ -38,7 +37,6 @@ public class ProcessZhilianList implements Processor,Runnable {
                 task = taskQueue.take();
                 process(task);
             }
-
         } catch(SocketTimeoutException e){
             try {
                 LOG.info("task connect fail. url is : " + task);
@@ -51,8 +49,6 @@ public class ProcessZhilianList implements Processor,Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void process(String task) throws IOException,SocketTimeoutException {
@@ -81,7 +77,6 @@ public class ProcessZhilianList implements Processor,Runnable {
             m.put("post_time",post_time);
 
             LOG.info("get json result ---->" + gson.toJson(m));
-
             result.add(gson.toJson(m));
         }
     }
