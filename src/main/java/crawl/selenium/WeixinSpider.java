@@ -1,19 +1,22 @@
 package crawl.selenium;
 
+import crawl.spider.pipline.FilePipline;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import sun.nio.ch.ThreadPool;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 import static crawl.spider.WorkCache.gson;
 
@@ -21,14 +24,38 @@ import static crawl.spider.WorkCache.gson;
  * Created by tcf24 on 2016/11/29.
  */
 public class WeixinSpider {
+    private static final Log LOG = LogFactory.getLog(WeixinSpider.class);
 
-    public static void main(String[] args) throws InterruptedException {
+    public static BlockingQueue weixinInfo = new LinkedBlockingDeque();
+
+    public static void main(String[] args){
         System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
-        WebDriver browser = new ChromeDriver();
+
+        ExecutorService pool = null;
+
+        try{
+            WebDriver browser = new ChromeDriver();
+
+            pool = Executors.newCachedThreadPool();
+            for (int i = 0; i < 5; i++) {
+                Thread t = new Thread(new ProcessWeixin("Weixin-" + i,weixinInfo));
+                pool.execute(t);
+            }
+
+            Thread t = new Thread(new FilePipline("filepipeline","target/weixin.txt"));
+            pool.execute(t);
+
+            StartupWeixin(browser,"vivo");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }finally {
+            pool.shutdown();
+        }
+    }
+
+    public static void StartupWeixin(WebDriver browser,String keyword) throws InterruptedException {
         browser.get("http://weixin.sogou.com/");
-
         WebDriverWait wait = new WebDriverWait(browser,1);
-
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("loginBtn")));
         browser.findElement(By.id("loginBtn")).click();
         browser.switchTo().frame(0);
@@ -41,11 +68,19 @@ public class WeixinSpider {
         browser.findElement(By.id("p")).sendKeys("39433956038167");
         browser.findElement(By.id("login_button")).click();
 
+        try {
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(0));
+            String img = browser.findElement(By.id("capImg")).getAttribute("src");
+            System.out.println("img url is ----> " + img);
+        }catch(org.openqa.selenium.TimeoutException e){
+            LOG.info("------> without picture  ");
+        }
+
         Thread.sleep(10 * 1000);
 
         //等待登录之后输入关键词
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("upquery")));
-        browser.findElement(By.id("upquery")).sendKeys("vivo");
+        browser.findElement(By.id("upquery")).sendKeys(keyword);
         browser.findElement(By.cssSelector("input.swz")).click();
 
 
@@ -62,9 +97,8 @@ public class WeixinSpider {
             System.out.println();
 
             parseList(browser);
-            Thread.sleep(7 * 1000);
+            Thread.sleep(((int)(Math.random() * 5) + 3) * 1000);
         }
-
     }
 
     private static void parseList(WebDriver browser) {
@@ -79,9 +113,12 @@ public class WeixinSpider {
             m.put("keyword","vivo");
 
             try {
-
+                weixinInfo.put(link);
+                System.out.println("success to send task -> " + link);
                 FileUtils.write(new File("target/weixinlist.txt"),gson.toJson(m) + "\n","utf-8",true);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });

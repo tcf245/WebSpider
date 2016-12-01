@@ -35,10 +35,14 @@ public class ProcessWeixin implements Processor,Runnable {
     public void run() {
         String task = "";
         try {
-            while (taskQueue.size() > 0) {
-                LOG.info("task queue size is  ----> " + taskQueue.size());
-                task = taskQueue.take();
-                process(task);
+            while (true){
+                while (taskQueue.size() > 0) {
+                    LOG.info("task queue size is  ----> " + taskQueue.size());
+                    task = taskQueue.take();
+                    process(task);
+                }
+                LOG.info(name + "  task queue size <= 0 , sleep 5 sec..");
+                Thread.sleep(5 * 1000);
             }
         } catch(SocketTimeoutException e){
             try {
