@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -35,7 +36,8 @@ public class WeixinSpider {
         ExecutorService pool = null;
 
         try{
-            WebDriver browser = new ChromeDriver();
+//            WebDriver browser = new ChromeDriver();
+            WebDriver browser = new PhantomJSDriver();
 
             pool = Executors.newCachedThreadPool();
             for (int i = 0; i < 5; i++) {
