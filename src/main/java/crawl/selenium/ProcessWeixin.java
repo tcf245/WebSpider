@@ -41,8 +41,8 @@ public class ProcessWeixin implements Processor,Runnable {
                     task = taskQueue.take();
                     process(task);
                 }
-                LOG.info(name + "  task queue size <= 0 , sleep 5 sec..");
-                Thread.sleep(5 * 1000);
+                LOG.debug(name + "  task queue size <= 0 , sleep 10 sec..");
+                Thread.sleep(10 * 1000);
             }
         } catch(SocketTimeoutException e){
             try {

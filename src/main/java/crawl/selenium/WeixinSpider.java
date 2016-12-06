@@ -1,6 +1,7 @@
 package crawl.selenium;
 
 import crawl.spider.pipline.FilePipline;
+import crawl.util.HttpClientUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,13 +10,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import sun.nio.ch.ThreadPool;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 import static crawl.spider.WorkCache.gson;
@@ -72,11 +73,29 @@ public class WeixinSpider {
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(0));
             String img = browser.findElement(By.id("capImg")).getAttribute("src");
             System.out.println("img url is ----> " + img);
+
+            byte[] b = HttpClientUtils.httpGet(img,null);
+            FileUtils.writeByteArrayToFile(new File("etc/vaildVode.png"),b);
+
+            System.out.println("vaild img has been save , please input the code...");
+
+            Scanner s = new Scanner(System.in);
+            String vaildCode = s.nextLine();
+
+//            browser.findElement(By.id("")).sendKeys(vaildCode);
+//            browser.findElement(By.id("")).click();
+
         }catch(org.openqa.selenium.TimeoutException e){
-            LOG.info("------> without picture  ");
+            LOG.info("------>login without picture  ");
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        Thread.sleep(10 * 1000);
+        Thread.sleep(2 * 1000);
 
         //等待登录之后输入关键词
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("upquery")));
