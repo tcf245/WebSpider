@@ -1,16 +1,14 @@
 package crawl.spider.downloader;
 
 import com.google.common.collect.Sets;
-import crawl.Site;
+import crawl.spider.Site;
 import crawl.spider.Page;
 import crawl.spider.Request;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -59,30 +57,24 @@ public class HttpClientDownloader implements Downloader {
 
     @Override
     public Page download(Request request) {
-
-        return null;
-    }
-
-//    @Override
-//    public Page download(Request request) {
-//        Site site = null;
-//        if (task != null) {
-//            site = task.getSite();
-//        }
-//        Set<Integer> acceptStatCode;
-//        String charset = null;
-//        Map<String, String> headers = null;
-//        if (site != null) {
-//            acceptStatCode = site.getAcceptStatCode();
-//            charset = site.getCharset();
-//            headers = site.getHeaders();
-//        } else {
-//            acceptStatCode = Sets.newHashSet(200);
-//        }
-//        LOG.info("downloading page {}", request.getUrl());
-//        CloseableHttpResponse httpResponse = null;
-//        int statusCode=0;
-//        try {
+        Site site = null;
+        if (request != null) {
+            site = request.getSite();
+        }
+        Set<Integer> acceptStatCode;
+        String charset = null;
+        Map<String, String> headers = null;
+        if (site != null) {
+            acceptStatCode = site.getAcceptStatCode();
+            charset = site.getCharset();
+            headers = site.getHeaders();
+        } else {
+            acceptStatCode = Sets.newHashSet(200);
+        }
+        LOG.info("downloading page " + request.getUrl());
+        CloseableHttpResponse httpResponse = null;
+        int statusCode=0;
+        try {
 //            HttpHost proxyHost = null;
 //            Proxy proxy = null; //TODO
 //            if (site.getHttpProxyPool() != null && site.getHttpProxyPool().isEnable()) {
@@ -91,42 +83,49 @@ public class HttpClientDownloader implements Downloader {
 //            } else if(site.getHttpProxy()!= null){
 //                proxyHost = site.getHttpProxy();
 //            }
-//
-//            HttpUriRequest httpUriRequest = getHttpUriRequest(request, site, headers);//���������˴���
-//            httpResponse = getHttpClient(site).execute(httpUriRequest);//getHttpClient�������˴�����֤
-//            statusCode = httpResponse.getStatusLine().getStatusCode();
-//            request.putExtra(Request.STATUS_CODE, statusCode);
-//            if (statusAccept(acceptStatCode, statusCode)) {
-//                Page page = handleResponse(request, charset, httpResponse);
-//                onSuccess(request);
-//                return page;
-//            } else {
-//                LOG.warn("code error " + statusCode + "\t" + request.getUrl());
-//                return null;
-//            }
-//        } catch (IOException e) {
-//            LOG.warn("download page " + request.getUrl() + " error", e);
-//            if (site.getCycleRetryTimes() > 0) {
-//                return addToCycleRetry(request, site);
-//            }
-//            onError(request);
-//            return null;
-//        } finally {
-//        	request.putExtra(Request.STATUS_CODE, statusCode);
+
+            HttpUriRequest httpUriRequest = getHttpUriRequest(request, site, headers);//���������˴���
+            httpResponse = getHttpClient(site).execute(httpUriRequest);//getHttpClient�������˴�����֤
+            statusCode = httpResponse.getStatusLine().getStatusCode();
+            request.putExtra("statusCode",statusCode);
+            if (statusAccept(acceptStatCode, statusCode)) {
+                Page page = handleResponse(request, charset, httpResponse);
+                onSuccess(request);
+                return page;
+            } else {
+                LOG.warn("code error " + statusCode + "\t" + request.getUrl());
+                return null;
+            }
+        } catch (IOException e) {
+            LOG.warn("download page " + request.getUrl() + " error", e);
+            if (site.getCycleRetryTimes() > 0) {
+                return addToCycleRetry(request, site);
+            }
+            onError(request);
+            return null;
+        } finally {
+            request.putExtra("statusCode",statusCode);
 //            if (site.getHttpProxyPool()!=null && site.getHttpProxyPool().isEnable()) {
 //                site.returnHttpProxyToPool((HttpHost) request.getExtra(Request.PROXY), (Integer) request
 //                        .getExtra(Request.STATUS_CODE));
 //            }
-//            try {
-//                if (httpResponse != null) {
-//                    //ensure the connection is released back to pool
-//                    EntityUtils.consume(httpResponse.getEntity());
-//                }
-//            } catch (IOException e) {
-//                LOG.warn("close response fail", e);
-//            }
-//        }
-//    }
+            try {
+                if (httpResponse != null) {
+                    //ensure the connection is released back to pool
+                    EntityUtils.consume(httpResponse.getEntity());
+                }
+            } catch (IOException e) {
+                LOG.warn("close response fail", e);
+            }
+        }
+    }
+    //TODO cuowu chuli
+    private void onError(Request request) {
+
+    }
+
+    private void onSuccess(Request request) {
+    }
 
 
     protected boolean statusAccept(Set<Integer> acceptStatCode, int statusCode) {
@@ -235,6 +234,22 @@ public class HttpClientDownloader implements Downloader {
         LOG.debug("Auto get charset: " + charset);
         // 3、todo use tools as cpdetector for content decode
         return charset;
+    }
+
+    protected Page addToCycleRetry(Request request, Site site) {
+        Page page = new Page();
+        Object cycleTriedTimesObject = request.getExtra("cycleRetryTimes");
+        if (cycleTriedTimesObject == null) {
+            page.addTargetRequest(request.putExtra("cycleRetryTimes", 1));
+        } else {
+            int cycleTriedTimes = (Integer) cycleTriedTimesObject;
+            cycleTriedTimes++;
+            if (cycleTriedTimes >= site.getCycleRetryTimes()) {
+                return null;
+            }
+            page.addTargetRequest(request.putExtra("cycleRetryTimes", cycleTriedTimes));
+        }
+        return page;
     }
 
     private static final Pattern patternForCharset = Pattern.compile("charset\\s*=\\s*['\"]*([^\\s;'\"]*)");

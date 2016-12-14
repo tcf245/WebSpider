@@ -1,3 +1,4 @@
+/*
 package crawl.spider.process;
 
 import org.apache.commons.logging.Log;
@@ -15,9 +16,11 @@ import java.util.concurrent.BlockingQueue;
 
 import static crawl.spider.WorkCache.*;
 
+*/
 /**
  * Created by tcf24 on 2016/11/24.
- */
+ *//*
+
 public class ProcessZhilianList implements Processor,Runnable {
     public String name;
     public BlockingQueue<String> taskQueue = null;
@@ -82,3 +85,4 @@ public class ProcessZhilianList implements Processor,Runnable {
     }
 
 }
+*/

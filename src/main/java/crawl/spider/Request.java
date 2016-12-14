@@ -10,8 +10,26 @@ public class Request {
 
     private String url;
     private String method;
-    private Map<String,Object> headers = new HashMap<>();
     private Map<String,String> params = new HashMap<>();
+    private Map<String, Object> extras = new HashMap<>();
+
+    //TODO  构造
+    private Site site;
+
+    public Object getExtra(String key) {
+        if (extras == null) {
+            return null;
+        }
+        return extras.get(key);
+    }
+
+    public Request putExtra(String key, Object value) {
+        if (extras == null) {
+            extras = new HashMap<String, Object>();
+        }
+        extras.put(key, value);
+        return this;
+    }
 
     public Map<String, String> getParams() {
         return params;
@@ -41,11 +59,7 @@ public class Request {
         this.method = method;
     }
 
-    public Map<String, Object> getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(Map<String, Object> headers) {
-        this.headers = headers;
+    public Site getSite() {
+        return site;
     }
 }

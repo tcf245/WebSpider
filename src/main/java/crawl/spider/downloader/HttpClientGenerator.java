@@ -1,6 +1,6 @@
 package crawl.spider.downloader;
 
-import crawl.Site;
+import crawl.spider.Site;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;

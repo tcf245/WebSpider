@@ -36,4 +36,8 @@ public class QueueScheduler implements Scheduler{
     public int size(){
         return queue.size();
     }
+
+    public void addDup(Request request){
+        dupSet.addToDupSet(request.getUrl());
+    }
 }

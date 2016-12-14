@@ -24,6 +24,12 @@ public class Page {
         return fields.get(key);
     }
 
+    public void addTargetRequest(Request request) {
+        synchronized (targetRequests) {
+            targetRequests.add(request);
+        }
+    }
+
     public void putField(String key,Object object){
         fields.put(key,object);
     }
