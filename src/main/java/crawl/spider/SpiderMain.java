@@ -1,6 +1,6 @@
 package crawl.spider;
 
-import crawl.spider.pipline.FilePipline;
+import crawl.spider.pipeline.FilePipeline;
 import crawl.spider.process.ProcessZhilianList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +31,7 @@ public class SpiderMain {
             }
 
             //启动保存线程
-            Thread t = new Thread(new FilePipline("datasaver","target/datasave.txt"));
+            Thread t = new Thread(new FilePipeline("datasaver","target/datasave.txt"));
             t.start();
 
         } catch (InterruptedException e) {
