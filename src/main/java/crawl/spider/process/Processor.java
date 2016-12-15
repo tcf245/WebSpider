@@ -1,6 +1,7 @@
 package crawl.spider.process;
 
 import crawl.spider.Page;
+import crawl.spider.Request;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -10,4 +11,5 @@ import java.net.SocketTimeoutException;
  */
 public interface Processor {
     void process(Page Page);
+    Request.Type getType();
 }

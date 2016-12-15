@@ -33,11 +33,17 @@ public class QueueScheduler implements Scheduler{
         return poll();
     }
 
+    @Override
+    public void addDup(Request request){
+        dupSet.addToDupSet(request.getUrl());
+    }
+
     public int size(){
         return queue.size();
     }
 
-    public void addDup(Request request){
-        dupSet.addToDupSet(request.getUrl());
+    public BlockingQueue<Request> getQueue() {
+        return queue;
     }
+
 }

@@ -98,7 +98,7 @@ public class HttpClientDownloader implements Downloader {
             }
         } catch (IOException e) {
             LOG.warn("download page " + request.getUrl() + " error", e);
-            if (site.getCycleRetryTimes() > 0) {
+            if (site.getRetryTimes() > 0) {
                 return addToCycleRetry(request, site);
             }
             onError(request);
@@ -244,7 +244,7 @@ public class HttpClientDownloader implements Downloader {
         } else {
             int cycleTriedTimes = (Integer) cycleTriedTimesObject;
             cycleTriedTimes++;
-            if (cycleTriedTimes >= site.getCycleRetryTimes()) {
+            if (cycleTriedTimes >= site.getRetryTimes()) {
                 return null;
             }
             page.addTargetRequest(request.putExtra("cycleRetryTimes", cycleTriedTimes));

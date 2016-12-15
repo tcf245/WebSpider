@@ -10,8 +10,10 @@ public class Request {
 
     private String url;
     private String method;
+    private Type type;
     private Map<String,String> params = new HashMap<>();
     private Map<String, Object> extras = new HashMap<>();
+    private int retryTimes = 0;
 
     //TODO  构造
     private Site site;
@@ -21,6 +23,34 @@ public class Request {
             return null;
         }
         return extras.get(key);
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public int getRetryTimes() {
+        return retryTimes;
+    }
+
+    public void setRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Map<String, Object> getExtras() {
+        return extras;
+    }
+
+    public void setExtras(Map<String, Object> extras) {
+        this.extras = extras;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
     }
 
     public Request putExtra(String key, Object value) {
@@ -39,8 +69,10 @@ public class Request {
         this.params = params;
     }
 
-    public Request(String url) {
+    public Request(String url,Type type,Site site) {
         this.url = url;
+        this.type = type;
+        this.site = site;
     }
 
     public String getUrl() {
@@ -61,5 +93,9 @@ public class Request {
 
     public Site getSite() {
         return site;
+    }
+
+    public enum Type{
+        LIST,INFO,COMMENT;
     }
 }

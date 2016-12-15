@@ -1,3 +1,4 @@
+/*
 package crawl.selenium;
 
 import crawl.spider.process.Processor;
@@ -17,9 +18,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static crawl.spider.WorkCache.gson;
 import static crawl.spider.WorkCache.result;
 
+*/
 /**
  * Created by BFD_303 on 2016/11/30.
- */
+ *//*
+
 public class ProcessWeixin implements Processor,Runnable {
 
     public String name;
@@ -109,3 +112,4 @@ public class ProcessWeixin implements Processor,Runnable {
 
     }
 }
+*/

@@ -1,5 +1,6 @@
 package crawl.spider;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class Page {
     private Request request;
     private String Html;
     private Map<String,Object> fields = new HashMap<String,Object>();
-    private List<Request> targetRequests;
+    private List<Request> targetRequests = new ArrayList<>();
     private int statusCode;
 
     public Page() {
@@ -25,9 +26,7 @@ public class Page {
     }
 
     public void addTargetRequest(Request request) {
-        synchronized (targetRequests) {
             targetRequests.add(request);
-        }
     }
 
     public void putField(String key,Object object){

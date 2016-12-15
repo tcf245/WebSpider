@@ -1,7 +1,5 @@
 package crawl.spider;
 
-import crawl.spider.pipeline.FilePipeline;
-import crawl.spider.process.ProcessZhilianList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
@@ -26,13 +24,13 @@ public class SpiderMain {
 
             //启动10 个工作线程
             for (int i = 0; i < 10; i++) {
-                Thread t = new Thread(new ProcessZhilianList("worker-" + i,taskQueue));
-                t.start();
+//                Thread t = new Thread(new ProcessZhilianList("worker-" + i,taskQueue));
+//                t.start();
             }
 
             //启动保存线程
-            Thread t = new Thread(new FilePipeline("datasaver","target/datasave.txt"));
-            t.start();
+//            Thread t = new Thread(new FilePipeline(result,"target/datasave.txt"));
+//            t.start();
 
         } catch (InterruptedException e) {
             e.printStackTrace();

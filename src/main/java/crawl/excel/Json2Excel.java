@@ -38,7 +38,7 @@ public class Json2Excel implements Runnable{
 
     public void run() {
         try {
-            List<String> lines = FileUtils.readLines(file);
+            List<String> lines = FileUtils.readLines(file,"utf-8");
             LOG.info(file.getName() + " get lines number is -> " + lines.size());
 
             lines.forEach(s -> insertRow(s));

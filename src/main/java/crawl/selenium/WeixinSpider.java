@@ -40,8 +40,8 @@ public class WeixinSpider {
 
             pool = Executors.newCachedThreadPool();
             for (int i = 0; i < 5; i++) {
-                Thread t = new Thread(new ProcessWeixin("Weixin-" + i,weixinInfo));
-                pool.submit(t);
+//                Thread t = new Thread(new ProcessWeixin("Weixin-" + i,weixinInfo));
+//                pool.submit(t);
             }
 
             //datasave

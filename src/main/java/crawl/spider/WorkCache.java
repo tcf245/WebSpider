@@ -12,8 +12,9 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class WorkCache {
     public static Gson gson = new Gson();
-    public static BlockingQueue<String> taskQueue = new LinkedBlockingDeque();
+    public static final String path = "etc/";
 
+    public static BlockingQueue<String> taskQueue = new LinkedBlockingDeque();
     public static List<String> result = new CopyOnWriteArrayList<>();
 
 }
