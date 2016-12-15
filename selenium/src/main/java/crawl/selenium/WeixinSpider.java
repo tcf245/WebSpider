@@ -82,11 +82,9 @@ public class WeixinSpider {
             String img = browser.findElement(By.id("capImg")).getAttribute("src");
             System.out.println("img url is ----> " + img);
 
-            byte[] b = HttpClientUtils.httpGet(img,null);
-            FileUtils.writeByteArrayToFile(new File("etc/vaildVode.png"),b);
+            HttpClientUtils.httpGetImg(img,null,new File("target/vode.jpg"));
 
             System.out.println("vaild img has been save , please input the code...");
-
             Scanner s = new Scanner(System.in);
             String vaildCode = s.nextLine();
 
