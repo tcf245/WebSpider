@@ -1,25 +1,28 @@
 package crawl.selenium;
 
-import crawl.spider.pipeline.FilePipeline;
-import crawl.util.HttpClientUtils;
+import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openqa.selenium.*;
+import org.apache.log4j.PropertyConfigurator;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import crawl.pipeline.FilePipeline;
+import crawl.util.HttpClientUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.*;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import static crawl.spider.WorkCache.gson;
 
 /**
  * Created by tcf24 on 2016/11/29.
@@ -27,9 +30,12 @@ import static crawl.spider.WorkCache.gson;
 public class WeixinSpider {
     private static final Log LOG = LogFactory.getLog(WeixinSpider.class);
 
-    public static BlockingQueue weixinInfo = new LinkedBlockingDeque();
+    private static Gson gson = new Gson();
+    public static BlockingQueue weixinInfo = new LinkedBlockingQueue();
 
     public static void main(String[] args){
+        PropertyConfigurator.configureAndWatch(WeixinSpider.class.getClassLoader().getResource("log4j.properties").getFile());
+
         System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
 
         ExecutorService pool = null;
@@ -40,13 +46,13 @@ public class WeixinSpider {
 
             pool = Executors.newCachedThreadPool();
             for (int i = 0; i < 5; i++) {
-//                Thread t = new Thread(new ProcessWeixin("Weixin-" + i,weixinInfo));
-//                pool.submit(t);
+                Thread t = new Thread(new ProcessWeixin("Weixin-" + i,weixinInfo));
+                pool.submit(t);
             }
 
             //datasave
-//            Thread t = new Thread(new FilePipeline("filepipeline","target/weixin.txt"));
-//            pool.submit(t);
+            Thread t = new Thread(new FilePipeline(WorkCache.result,"target/weixin.txt"));
+            pool.submit(t);
 
             StartupWeixin(browser,"vivo");
         } catch (InterruptedException e) {
@@ -107,6 +113,22 @@ public class WeixinSpider {
 
         //翻页
         for (int i = 1; i < 200; i++) {
+
+            if (browser.findElement(By.id("seccodeImage")) != null){
+                try {
+                    HttpClientUtils.httpGetImg("http://weixin.sogou.com/antispider/util/seccode.php",null,new File("target/vode.jpg"));
+                    System.out.println("please input code...");
+                    Scanner scanner = new Scanner(System.in);
+                    String code = scanner.next();
+
+                    browser.findElement(By.id("seccodeInput")).sendKeys(code);
+
+                    browser.findElement(By.id("submit")).click();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             //等待下一页按钮出现
             wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sogou_next")));
 

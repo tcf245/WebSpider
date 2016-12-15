@@ -70,10 +70,11 @@ public class ProcessorZhilianList implements Processor {
     }
 
     public static void main(String[] args) {
-        Site site = Site.me("Zhilian").setDomain("http://www.zhaopin.cn/");
+        Site site = Site.me("Zhilian").setDomain("http://www.zhaopin.cn/").setIntervals(1000);
         new Spider(site,new ProcessorZhilianList())
                 .addStartRequest("http://sou.zhaopin.com/jobs/searchresult.ashx?bj=4010200&jl=538&sm=0&p=1", Request.Type.LIST)
                 .setDup(true)
+                .setThreadNum(1)
                 .run();
     }
 
