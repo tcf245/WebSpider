@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -112,8 +113,8 @@ public class WeixinSpider {
         //翻页
         for (int i = 1; i < 200; i++) {
 
-            if (browser.findElement(By.id("seccodeImage")) != null){
                 try {
+                    browser.findElement(By.id("seccodeImage"));
                     HttpClientUtils.httpGetImg("http://weixin.sogou.com/antispider/util/seccode.php",null,new File("target/vode.jpg"));
                     System.out.println("please input code...");
                     Scanner scanner = new Scanner(System.in);
@@ -122,10 +123,14 @@ public class WeixinSpider {
                     browser.findElement(By.id("seccodeInput")).sendKeys(code);
 
                     browser.findElement(By.id("submit")).click();
+                } catch (NoSuchElementException e) {
+                    System.out.println("counld not found second img..");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+
+            Set<Cookie> cookies = browser.manage().getCookies();
+            cookies.forEach(c-> System.out.println(c.getName() + " ---> " + c.getValue()));
 
             //等待下一页按钮出现
             wait.until(ExpectedConditions.presenceOfElementLocated(By.id("sogou_next")));

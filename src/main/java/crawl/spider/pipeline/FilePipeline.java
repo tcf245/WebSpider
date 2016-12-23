@@ -40,13 +40,6 @@ public class FilePipeline implements Pipeline,Runnable{
                 }
 
                 synchronized (collection){
-                    if (collection instanceof BlockingQueue){
-                        List<String> list = new ArrayList<>();
-                        Gson gson = new Gson();
-                        collection.forEach(e -> list.add(gson.toJson(e)));
-                        FileUtils.writeLines(target,list,false);
-                        continue;
-                    }
                     FileUtils.writeLines(target,collection,true);
                     LOG.info(collection.size() + " results has save to disk..  waiting 60 second ..");
                     collection.clear();
