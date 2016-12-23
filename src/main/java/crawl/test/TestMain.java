@@ -10,12 +10,36 @@ import java.util.Map;
  */
 public class TestMain {
     public static void main(String[] args) {
-        int[] arr = {1,64,557,86797,78,12,4,5,46,45,7,474,568,6,78,567,83,45,6,45,75,68,3,456,3,4573};
+//        int[] arr = {1,64,557,86797,78,12,4,5,46,45,7,474,568,6,78,567,83,45,6,45,75,68,3,456,3,4573};
+//
+//        int[] result = new int[arr.length];
+//        mergeSort(arr,result,0,arr.length - 1);
+//
+//        Arrays.stream(arr).forEach(i -> System.out.println(i));
 
-        int[] result = new int[arr.length];
-        mergeSort(arr,result,0,arr.length - 1);
+        listAllChar();
+    }
 
-        Arrays.stream(arr).forEach(i -> System.out.println(i));
+    public static void listAllChar(){
+        for (int i = -128; i < 128; i++) {
+            char c = (char) i;
+            System.out.println(i + " -> "  + c);
+        }
+    }
+
+    public static String byteToBinaryString(byte b) {
+        String s = Integer.toBinaryString(b);
+        if (b < 0) {
+            s = s.substring(24);
+        } else {
+            if (s.length() < 8) {
+                int len = s.length();
+                for (int i = 0; i < 8 - len; i++) {
+                    s = "0" + s;
+                }
+            }
+        }
+        return s;
     }
 
     public static int reverse(int x) {
