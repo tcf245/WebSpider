@@ -10,6 +10,6 @@ import java.net.SocketTimeoutException;
  * Created by tcf24 on 2016/11/27.
  */
 public interface Processor {
-    void process(Page Page);
+    void process(Page page);
     Request.Type getType();
 }

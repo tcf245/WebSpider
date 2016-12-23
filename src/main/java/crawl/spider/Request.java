@@ -3,6 +3,8 @@ package crawl.spider;
 import java.util.HashMap;
 import java.util.Map;
 
+import static crawl.spider.WorkCache.gson;
+
 /**
  * Created by BFD_303 on 2016/12/14.
  */
@@ -93,6 +95,11 @@ public class Request {
 
     public Site getSite() {
         return site;
+    }
+
+    @Override
+    public String toString() {
+        return gson.toJson(this);
     }
 
     public enum Type{

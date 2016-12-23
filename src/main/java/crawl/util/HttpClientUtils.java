@@ -56,7 +56,6 @@ public class HttpClientUtils {
 	/**
 	 * get 请求示例代码
 	 * @param url
-	 * @param charset
 	 * @param headers
 	 * @return
 	 * @throws Exception
@@ -74,6 +73,7 @@ public class HttpClientUtils {
 			}
 		}
 		HttpResponse response = client.execute(httpget);
+		System.out.println("request code : " + response.getStatusLine().getStatusCode());
 		HttpEntity en = response.getEntity();
 		byte[] b = EntityUtils.toByteArray(en);
 		return b;
