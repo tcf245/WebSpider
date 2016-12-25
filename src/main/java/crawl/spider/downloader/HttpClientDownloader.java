@@ -5,7 +5,6 @@ import crawl.spider.Site;
 import crawl.spider.Page;
 import crawl.spider.Request;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
@@ -204,7 +203,7 @@ public class HttpClientDownloader implements Downloader {
         // 1、encoding in http header Content-Type
         String value = httpResponse.getEntity().getContentType().getValue();
         charset = getCharset(value);
-        if (StringUtils.isNotBlank(charset)) {
+        if (!charset.isEmpty()) {
             LOG.debug("Auto get charset: " + charset);
             return charset;
         }
@@ -212,7 +211,7 @@ public class HttpClientDownloader implements Downloader {
         Charset defaultCharset = Charset.defaultCharset();
         String content = new String(contentBytes, defaultCharset.name());
         // 2、charset in meta
-        if (StringUtils.isNotEmpty(content)) {
+        if (!content.isEmpty()) {
             Document document = Jsoup.parse(content);
             Elements links = document.select("meta");
             for (Element link : links) {
@@ -225,7 +224,7 @@ public class HttpClientDownloader implements Downloader {
                     break;
                 }
                 // 2.2、html5 <meta charset="UTF-8" />
-                else if (StringUtils.isNotEmpty(metaCharset)) {
+                else if (!metaCharset.isEmpty()) {
                     charset = metaCharset;
                     break;
                 }
