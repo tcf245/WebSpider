@@ -15,15 +15,24 @@ import java.util.Map;
 public class Test {
 
     public static void main(String[] args) {
+        Gson gson = new Gson();
 
         try {
-            List<String> lines = FileUtils.readLines(new File("etc/test.txt"),"utf-8");
-            lines.forEach(s -> {
-                s = s.replace("    ","\t").replace("   ","\t").replace("  ","\t").replace(" ","\t");
-               String[] strs = s.trim().split("\t");
-                String sql = "insert into bbslist_000 (cid,tname,keyword,pagetype,url,status,createtime) values(\"souhu_qiche\",\""+strs[0]+"\",\""+strs[1]+"\",\"bbspostlist\",\""+strs[2]+"\",1,now());";
-                System.out.println(sql);
+            String json = FileUtils.readFileToString(new File("etc/json.json"),"utf-8");
+            Map<String,Object> map = gson.fromJson(json,Map.class);
 
+            List<String> keys = (List<String>) map.get("keys");
+            List<Map<String,Object>> showdata = (List<Map<String, Object>>) map.get("showdata");
+
+            showdata.forEach( m -> {
+                keys.forEach( k -> {
+                    try{
+                        m.get(k).toString();
+                    }catch(NullPointerException e){
+                        System.out.println(k);
+                        System.out.println(gson.toJson(m));
+                    }
+                });
             });
 
 

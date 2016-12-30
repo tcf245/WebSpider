@@ -1,6 +1,5 @@
 package crawl.excel;
 
-import com.google.common.base.Predicates;
 import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 
@@ -62,7 +61,7 @@ public class Json2Csv {
                     }
                     System.out.println("result set has lines count is : " + results.size());
                     if (results.size() >= 10000) {
-                        FileUtils.writeLines(targetFile, results, true);
+                        FileUtils.writeLines(targetFile, "gbk",results, true);
                         results.clear();
                         System.out.println(results.size() + "  result set has been flush to disk .. now result will be clear .");
                     }
@@ -80,7 +79,7 @@ public class Json2Csv {
                 }
             }
 
-            FileUtils.writeLines(targetFile, results, true);
+            FileUtils.writeLines(targetFile, "gbk",results, true);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,8 +93,8 @@ public class Json2Csv {
 
     public static void main(String[] args) {
 
-        File jsonFile = new File("F:\\xinsheng.txt");
-        File targetFile = new File("F:\\xinsheng.csv");
+        File jsonFile = new File("E:\\xinsheng\\xinsheng.txt");
+        File targetFile = new File("E:\\xinsheng\\xinsheng.csv");
 
         json2csv(jsonFile, targetFile);
 

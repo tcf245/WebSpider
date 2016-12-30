@@ -10,14 +10,7 @@ import java.util.Map;
  */
 public class TestMain {
     public static void main(String[] args) {
-//        int[] arr = {1,64,557,86797,78,12,4,5,46,45,7,474,568,6,78,567,83,45,6,45,75,68,3,456,3,4573};
-//
-//        int[] result = new int[arr.length];
-//        mergeSort(arr,result,0,arr.length - 1);
-//
-//        Arrays.stream(arr).forEach(i -> System.out.println(i));
 
-        listAllChar();
     }
 
     public static void listAllChar(){
