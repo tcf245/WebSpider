@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebSpider.iml" filepath="$PROJECT_DIR$/.idea/modules/WebSpider.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebSpider_main.iml" filepath="$PROJECT_DIR$/.idea/modules/WebSpider_main.iml" group="WebSpider" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebSpider_test.iml" filepath="$PROJECT_DIR$/.idea/modules/WebSpider_test.iml" group="WebSpider" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/selenium/selenium.iml" filepath="$PROJECT_DIR$/.idea/modules/selenium/selenium.iml" group="selenium" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/selenium/selenium_main.iml" filepath="$PROJECT_DIR$/.idea/modules/selenium/selenium_main.iml" group="selenium" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/selenium/selenium_test.iml" filepath="$PROJECT_DIR$/.idea/modules/selenium/selenium_test.iml" group="selenium" />
     </modules>
   </component>
 </project>

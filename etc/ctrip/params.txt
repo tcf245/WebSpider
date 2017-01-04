@@ -1,0 +1,6 @@
+CheckInDate:2017-01-04
+checkOutDate:2017-01-05
+cityId:1
+HotelId:457112
+Latitude:39.9390907287598
+Longitude:116.514617919922

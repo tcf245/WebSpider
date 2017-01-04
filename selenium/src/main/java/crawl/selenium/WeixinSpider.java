@@ -1,6 +1,8 @@
 package crawl.selenium;
 
 import com.google.gson.Gson;
+import crawl.pipeline.FilePipeline;
+import crawl.util.HttpClientUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,12 +11,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import crawl.pipeline.FilePipeline;
-import crawl.util.HttpClientUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +42,8 @@ public class WeixinSpider {
         ExecutorService pool = null;
 
         try{
-            WebDriver browser = new ChromeDriver();
-//            WebDriver browser = new PhantomJSDriver();
+//            WebDriver browser = new ChromeDriver();
+            WebDriver browser = new FirefoxDriver();
 
             pool = Executors.newCachedThreadPool();
             for (int i = 0; i < 5; i++) {
@@ -59,7 +59,7 @@ public class WeixinSpider {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
-            pool.shutdown();
+//            pool.shutdown();
         }
     }
 
