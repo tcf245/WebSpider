@@ -10,10 +10,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -187,5 +184,16 @@ public class CtripSpiderTest {
             }
         });
         System.out.println(new Gson().toJson(map));
+    }
+
+    public void tsbPageHandler(WebDriver driver){
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(0));
+        driver.close();
+    }
+
+    public void closeTab(WebDriver driver,String handles){
+        if (handles == null) return;
+        driver.switchTo().window(handles).close();
     }
 }
