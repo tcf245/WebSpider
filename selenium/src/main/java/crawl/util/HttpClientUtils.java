@@ -145,9 +145,9 @@ public class HttpClientUtils {
 	 * @throws Exception
 	 */
 	public static String httpPost(String url, String charset,Map<String,String> headers,Map<String,String> posts,String ip) throws Exception {
-//		HttpClientBuilder httpBuilder = HttpClientBuilder.create();
-//		httpBuilder.setUserAgent(ua);
-//		HttpClient client = httpBuilder.build();
+		HttpClientBuilder httpBuilder = HttpClientBuilder.create();
+		HttpClient client = httpBuilder.build();
+
 		HttpPost httppost = new HttpPost(url);
 
 		if (null != ip && !"".equals(ip)) {

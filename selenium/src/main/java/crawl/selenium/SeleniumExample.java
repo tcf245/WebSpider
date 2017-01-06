@@ -61,10 +61,6 @@ public class SeleniumExample {
         //获取cookie并打印
         Set<Cookie> cookies = driver.manage().getCookies();
         cookies.forEach(c -> System.out.println(c.getName() + " ---> " + c.getValue()));
-//        String cookie = cookies.stream()
-//                .map(Cookie::getValue)
-//                .distinct()
-//                .collect(Collectors.joining(";"));
 
         //3秒后关闭浏览器
         Thread.sleep(3000);

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,8 @@ import java.util.regex.Pattern;
  * Created by BFD_303 on 2016/12/30.
  */
 public class CtripSpiderTest {
+        public static Gson gson = new Gson();
+        public static AtomicInteger count = new AtomicInteger(0);
 
     static{
         //加载驱动
@@ -34,21 +37,19 @@ public class CtripSpiderTest {
                         "http://hotels.ctrip.com/hotel/457112.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_22",
                         "http://hotels.ctrip.com/hotel/2570579.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_23",
                         "http://hotels.ctrip.com/hotel/5293044.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_24",
-                        "http://hotels.ctrip.com/hotel/691682.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_7"};
-//        instance.getCtripDiscountInfo(urls[0]);
+                        "http://hotels.ctrip.com/hotel/691682.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_7",
+                        "http://hotels.ctrip.com/hotel/431639.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_4"};
 
-        for (int i = 0; i < 5; i++) {
+//        instance.getCtripDiscountInfo("http://hotels.ctrip.com/hotel/431639.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_4");
+
+        for (int i = 0; i < urls.length; i++) {
             String url = urls[i];
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while(true){
                         instance.getCtripDiscountInfo(url);
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println("count is ----> " + count.incrementAndGet());
                     }
                 }
             }).start();
@@ -89,26 +90,68 @@ public class CtripSpiderTest {
         });
         cookie.deleteCharAt(cookie.length()-1);
         headers.put("Cookie",cookie.toString());
+        driver.quit();
 
         try {
-            getHeaders(new File("etc/ctrip/request.txt"),headers);
-
             String content = "";
+            getHeaders(new File("etc/ctrip/request.txt"),headers);
+            //优惠信息
             url = "http://taocan.ctrip.com/SH/Ajax/DPSearch/AjaxDPGetRoomAndScenicSpot.aspx";
             content = HttpClientUtils.httpPost(url,"utf-8",headers,params,null);
+            System.out.println(Thread.currentThread().getName() + " DiscountInformation----> " +  content);
 
-            System.out.println(Thread.currentThread().getName() + " ----> " +  content);
+            //更多景点
+            params.put("PageSize",15+"");
+            params.put("PageIndex",1+"");
+            params.put("sorttype","S");
+            params.put("sortdirection","D");
+            url = "http://taocan.ctrip.com/SH/Ajax/DPSearch/AjaxMoreScenicSpot.aspx";
+            content = HttpClientUtils.httpPost(url,"utf-8",headers,params,null);
+            System.out.println(Thread.currentThread().getName() + " ScenicSpotList----> " +  content);
+
+
+            Map<String,Object> scenicData = gson.fromJson(content,Map.class);
+            if (!(boolean)scenicData.get("success")){
+                System.out.println("get data failed... -> " + content);
+                return;
+            }
+
+            List<Map<String,Object>> scenicList = (List<Map<String, Object>>) scenicData.get("data");
+            System.out.println("scenicList size is : " + scenicList.size());
+            for (Map<String, Object> m : scenicList) {
+                int id = 0;
+                try{
+                    id = (int) m.get("ScenicSpotId");
+                }catch(ClassCastException e){
+                    id = (int) ((double)m.get("ScenicSpotId"));
+                    System.out.println("get id : " + id);
+                }
+
+                //单个景点详情
+                params.remove("cityId");
+                params.remove("HotelId");
+                params.remove("Latitude");
+                params.remove("Longitude");
+                params.remove("PageSize");
+                params.remove("PageIndex");
+                params.remove("sorttype");
+                params.remove("sortdirection");
+
+                params.put("ScenicSpotId",id+"");
+                url = "http://taocan.ctrip.com/SH/Ajax/DPSearch/AjaxMoreTicket.aspx";
+                content = HttpClientUtils.httpPost(url,"utf-8",headers,params,null);
+                System.out.println(Thread.currentThread().getName() + " ScenicSpotId----> " +  content);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        driver.quit();
     }
 
     public Map<String,String> getDiscountParams(String html){
         Map<String,String> params = new HashMap<String,String>();
         params.put("CheckInDate","checkIn:'([\\d-]+)'");
-        params.put("checkOutDate","checkOut:'([\\d-]+)'");
+        params.put("CheckOutDate","checkOut:'([\\d-]+)'");
         params.put("cityId","cityId:'([\\d]+)'");
         params.put("HotelId","hotelId : ([\\d]+)");
         params.put("Latitude","hotellat: '([\\d\\.]+)'");
