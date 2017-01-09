@@ -5,8 +5,6 @@ import crawl.util.HttpClientUtils;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +55,7 @@ public class CtripSpiderTest {
     public void getCtripDiscountInfo(String url){
         // 创建了一个 Chrome driver 的实例
         // 注意，其余的代码依赖于接口而非实例
-        WebDriver driver = new PhantomJSDriver();
+        WebDriver driver = new ChromeDriver();
 
         driver.get(url);
 
