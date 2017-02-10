@@ -86,7 +86,6 @@ public class WeiboCommentTest {
         }
     }
 
-
     public void getReplyAndUpCnt(TagNode div,Map<String,Object> map) throws XPatherException {
         if(div.evaluateXPath("//div[@class='WB_face W_fl']").length == 0) return;
 

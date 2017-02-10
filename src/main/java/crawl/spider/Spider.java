@@ -134,7 +134,7 @@ public class Spider {
     }
 
     public Processor getProcessor(Request request){
-        //TODO
+        //TODO choose processor by pagetype
         for (Processor p : processors){
             if(p.getType() == request.getType()) return p;
         }

@@ -1,15 +1,40 @@
 package crawl.test;
 
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.Gson;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by tcf24 on 2016/11/26.
  */
 public class TestMain {
+    private static Gson gson = new Gson();
+
     public static void main(String[] args) {
+        Set<String> resultSet = new HashSet<String>();
+        List<String> resultList = new ArrayList<>();
+        try {
+            List<String> lines = FileUtils.readLines(new File("etc/chanpin.txt"),"utf-8");
+            lines.forEach(l -> {
+                Map<String,Object> item = gson.fromJson(l,Map.class);
+                List<String> items = (List<String>) item.get("items");
+                items.forEach(i -> {
+                    resultList.add(i);
+                    resultSet.add(i);
+                });
+            });
+
+            System.out.println(resultList.size());
+            System.out.println(resultSet.size());
+            FileUtils.writeLines(new File("etc/result.txt"),resultSet,"\n",true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

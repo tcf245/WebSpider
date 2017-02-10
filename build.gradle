@@ -25,6 +25,9 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
     compile group: 'net.sourceforge.htmlcleaner', name: 'htmlcleaner', version: '2.13'
 
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '0.8.2.2'
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+
     compile group: 'org.apache.poi', name: 'poi', version: '3.14'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.14'
     compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.14'

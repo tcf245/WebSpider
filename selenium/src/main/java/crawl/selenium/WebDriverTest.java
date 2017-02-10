@@ -1,11 +1,5 @@
 package crawl.selenium;
 
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
-
 /**
  * Created by BFD_303 on 2017/1/6.
  */
@@ -17,18 +11,10 @@ public class WebDriverTest {
     }
 
     public static void main(String[] args) {
-//        TaobaoLogin taobao = new TaobaoLogin();
-//        taobao.login("username","passwd");
+        String url = "https://stsfyf678.1688.com/page/creditdetail.htm?spm=a2615.2177701.0.0.DJhjxu";
 
-        WebDriver driver = new ChromeDriver();
-        Actions action = new Actions(driver);
-
-        driver.get("http://www.google.com");
-        action.keyDown(Keys.CONTROL).sendKeys("T")
-                .keyUp(Keys.CONTROL)
-                .build();
-
-        System.out.println(driver.getWindowHandles().size());
+        TaobaoLogin taobao = new TaobaoLogin();
+        taobao.login("","");
     }
 
 }

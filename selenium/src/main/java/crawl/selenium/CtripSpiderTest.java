@@ -63,18 +63,6 @@ public class CtripSpiderTest {
         String html = driver.getPageSource();
         Map<String,String> params = getDiscountParams(html);
 
-//        try{
-//            WebElement element = driver.findElement(By.cssSelector("ul#hotel_tabs_DP_TAB li.fn-shx-dp a"));
-//            if (element != null){
-//                Actions action = new Actions(driver);
-//                action.moveToElement(element).click().perform();
-//            }
-//        }catch(NoSuchElementException e){
-//            System.out.println("no discount information ..");
-//            driver.quit();
-//            return;
-//        }
-
         Set<Cookie> cookies = driver.manage().getCookies();
         Map<String,String> headers = new HashMap<>();
 
