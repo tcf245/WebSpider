@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.codis.jodis:jodis:0.3.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.codis.jodis/jodis/0.3.0/c42985944c5bf1878d99aaf2d1cb7ea0e9b4c020/jodis-0.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.codis.jodis/jodis/0.3.0/e72a6c435e8124d7ad257c571fa187763161148/jodis-0.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

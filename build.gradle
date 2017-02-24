@@ -27,6 +27,8 @@ dependencies {
 
     compile group: 'org.apache.kafka', name: 'kafka-clients', version: '0.8.2.2'
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+    compile group: 'io.codis.jodis', name: 'jodis', version: '0.3.0'
+
 
     compile group: 'org.apache.poi', name: 'poi', version: '3.14'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.14'

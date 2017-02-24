@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,6 +26,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 
 /**
+ * selenium
+ * sougou微信抓取测试
  * Created by tcf24 on 2016/11/29.
  */
 public class WeixinSpider {
@@ -36,15 +38,14 @@ public class WeixinSpider {
 
     public static void main(String[] args){
         PropertyConfigurator.configureAndWatch(WeixinSpider.class.getClassLoader().getResource("log4j.properties").getFile());
-
+        //chrome驱动
         System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
-
         ExecutorService pool = null;
 
         try{
-//            WebDriver browser = new ChromeDriver();
-            WebDriver browser = new FirefoxDriver();
+            WebDriver browser = new ChromeDriver();
 
+            //并发测试
             pool = Executors.newCachedThreadPool();
             for (int i = 0; i < 5; i++) {
                 Thread t = new Thread(new ProcessWeixin("Weixin-" + i,weixinInfo));
@@ -59,22 +60,24 @@ public class WeixinSpider {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
-//            pool.shutdown();
+            pool.shutdown();
         }
     }
 
     public static void StartupWeixin(WebDriver browser,String keyword) throws InterruptedException {
+        //打开页面
         browser.get("http://weixin.sogou.com/");
         WebDriverWait wait = new WebDriverWait(browser,1);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("loginBtn")));
+        //点击登录按钮
         browser.findElement(By.id("loginBtn")).click();
         browser.switchTo().frame(0);
-
+        //选择用QQ账号登录
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("ptlogin_iframe"));
         browser.findElement(By.id("switcher_plogin")).click();
-
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("login_button")));
-        browser.findElement(By.id("u")).sendKeys("2609607316");
+        //填写表单 登录
+        browser.findElement(By.id("u")).sendKeys("2609607316"/* 帐户密码*/);
         browser.findElement(By.id("p")).sendKeys("39433956038167");
         browser.findElement(By.id("login_button")).click();
 
@@ -83,8 +86,10 @@ public class WeixinSpider {
             String img = browser.findElement(By.id("capImg")).getAttribute("src");
             System.out.println("img url is ----> " + img);
 
+            //保存验证码
             HttpClientUtils.httpGetImg(img,null,new File("target/vode.jpg"));
 
+            //手动输入验证码
             System.out.println("vaild img has been save , please input the code...");
             Scanner s = new Scanner(System.in);
             String vaildCode = s.nextLine();
@@ -113,6 +118,7 @@ public class WeixinSpider {
         //翻页
         for (int i = 1; i < 200; i++) {
 
+            //验证码验证（抓取次数过多时会出现）
                 try {
                     browser.findElement(By.id("seccodeImage"));
                     HttpClientUtils.httpGetImg("http://weixin.sogou.com/antispider/util/seccode.php",null,new File("target/vode.jpg"));
@@ -147,6 +153,10 @@ public class WeixinSpider {
         }
     }
 
+    /**
+     *  列表页解析
+     * @param browser
+     */
     private static void parseList(WebDriver browser) {
         List<WebElement> links =  browser.findElements(By.cssSelector("ul.news-list li div.txt-box h3"));
         links.forEach( l -> {
