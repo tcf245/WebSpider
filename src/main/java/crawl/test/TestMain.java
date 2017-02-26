@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by tcf24 on 2016/11/26.
@@ -15,27 +16,35 @@ public class TestMain {
     private static Gson gson = new Gson();
 
     public static void main(String[] args) {
-        Set<String> resultSet = new HashSet<String>();
-        List<String> resultList = new ArrayList<>();
-        try {
-            List<String> lines = FileUtils.readLines(new File("etc/chanpin.txt"),"utf-8");
-            lines.forEach(l -> {
-                Map<String,Object> item = gson.fromJson(l,Map.class);
-                List<String> items = (List<String>) item.get("items");
-                items.forEach(i -> {
-                    resultList.add(i);
-                    resultSet.add(i);
-                });
-            });
+        TestMain test = new TestMain();
+        int[] num1 = {0,1,2,3,4,5,6};
+        int[] num2 = {8,9};
+        test.merge(num1,num1.length,num2,num2.length);
+        System.out.println(Arrays.stream(num1)
+                .distinct()
+                .mapToObj(Integer::toString)
+                .collect(Collectors.joining(",")));
+    }
 
-            System.out.println(resultList.size());
-            System.out.println(resultSet.size());
-            FileUtils.writeLines(new File("etc/result.txt"),resultSet,"\n",true);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int left = 0;
+        int right = 0;
+        while(right <= n){
+            if (right >= n)
+                return;
+            while(left >= m && right < n){
+                nums1[left++] = nums2[right++];
+                System.out.println(left+","+right);
+            }
+            while(nums1[left] > nums2[right]){
+                swap(nums1[left++],nums2[right]);
+            }
         }
-
+    }
+    public void swap(int a, int b){
+        int temp = a;
+        a = b;
+        b = temp;
     }
 
     public static void listAllChar(){

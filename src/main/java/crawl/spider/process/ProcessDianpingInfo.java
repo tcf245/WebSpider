@@ -21,20 +21,48 @@ public class ProcessDianpingInfo implements Processor{
         Element body = doc.body();
 
         String city = body.select("a.city").text();
-        String name = body.select("h1.shop-name").text();
-        String address = body.select("div.expand-info span.item").text();
-        String avgPriceTitle = body.select("span#avgPriceTitle").text();
-        String reviewCount = body.select("span#reviewCount").text();
-        String star = body.select("span#power-star").attr("title");
-        String time = body.select("p.info span.item").text();
+        String name = "";
+        String address = "";
+        String avgPrice = "";
+        String reviewCount = "";
+        String star = "";
+        String time = "";
 
-        System.out.println("city " + city);
-        System.out.println("name " + name);
-        System.out.println("address " + address);
-        System.out.println("avgPriceTitle " + avgPriceTitle);
-        System.out.println("reviewCount " + reviewCount);
-        System.out.println("star " + star);
-        System.out.println("time " + time);
+        try{
+            if (!"".equals(address = body.select("div.expand-info span.item").text().trim()) && !"".equals(name = body.select("h1.shop-name").text().replace("添加分店",""))){
+                avgPrice = body.select("span#avgPriceTitle").text().replace("人均：","");
+                reviewCount = body.select("span#reviewCount").text().replace("条评论","");
+                star = body.select("span.mid-rank-stars").attr("title");
+                time = body.select("p.info span.item").text();
+            }
+            else if (!"".equals(name = body.select("h1.shop-name").text())
+                    && !"".equals(address = body.select("div#base-info p.shop-address").text())){
+                reviewCount = body.select("p.info span.item").text().replace("(","").replace(")","");
+            }else if(!"".equals(name = body.select("div.hotel-title h1").text())
+                    && !"".equals(address = body.select("div.hotel-address-box span.hotel-address").text().replace("地址：",""))){
+                reviewCount = body.select("h2 a.sub-title span.count").text().replace("(","").replace(")","");
+            }else{
+                System.out.println("parse fail.");
+            }
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("city:" + city);
+        System.out.println("name:" + name);
+        System.out.println("address:" + address);
+        System.out.println("avgPrice:" + avgPrice);
+        System.out.println("reviewCount:" + reviewCount);
+        System.out.println("star:" + star);
+        System.out.println("time:" + time);
+
+        page.putField("city",city);
+        page.putField("name",name);
+        page.putField("address",address);
+        page.putField("avgPrice",avgPrice);
+        page.putField("reviewCount",reviewCount);
+        page.putField("star",star);
+        page.putField("time",time);
 
     }
 

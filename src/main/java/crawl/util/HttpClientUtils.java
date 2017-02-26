@@ -80,6 +80,32 @@ public class HttpClientUtils {
 	}
 
 	/**
+	 * get 请求示例代码
+	 * @param url
+	 * @param headers
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getHtml(String url,Map<String,String> headers) throws Exception {
+		HttpClientBuilder httpBuilder = HttpClientBuilder.create();
+		httpBuilder.setUserAgent(ua);
+
+		HttpClient client = httpBuilder.build();
+		HttpGet httpget = new HttpGet(url);
+
+		if (headers != null && headers.size() > 0) {
+			for (String key : headers.keySet()) {
+				httpget.setHeader(key, headers.get(key));
+			}
+		}
+		HttpResponse response = client.execute(httpget);
+		System.out.println("request code : " + response.getStatusLine().getStatusCode());
+		HttpEntity en = response.getEntity();
+		return EntityUtils.toString(en);
+
+	}
+
+	/**
 	 *  post 请求示例代码
 	 * @param url
 	 * @param charset
