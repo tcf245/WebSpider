@@ -30,7 +30,7 @@ public class KfkProducerUtil {
     // 初始化kafka的配置
     private void init(){
         props = new Properties();
-        props.put("bootstrap.servers", Config.getConfigStr("bootstrap.servers"));// 此处配置的是kafka的Ip和端口
+        props.put("bootstrap.servers", Config.getConfigStr("bootstrap.servers",""));// 此处配置的是kafka的Ip和端口
         logger.info("kafka的ip以及端口=" + Config.getConfigStr("bootstrap.servers"));
         // 0表示不确认主服务器是否收到消息,马上返回,低延迟但最弱的持久性,数据可能会丢失
         // 1表示确认主服务器收到消息后才返回,持久性稍强,可是如果主服务器死掉,从服务器数据尚未同步,数据可能会丢失

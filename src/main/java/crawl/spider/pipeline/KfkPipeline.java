@@ -37,6 +37,7 @@ public class KfkPipeline implements Pipeline,Runnable {
                 synchronized (result){
                     producer.send(topic,result);
                     LOG.info(result.size() + " result has send to kfk..  waiting 60 second ..");
+                    KfkProducerUtil.getInstance().send("dianping",result);
                     result.clear();
                 }
 

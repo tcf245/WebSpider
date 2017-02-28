@@ -23,11 +23,13 @@ public class ProcessDianpingList implements Processor{
         Elements elements = doc.select("div#shop-all-list ul li");
         for (Element e : elements) {
             String href = e.select("div.txt div.tit a").attr("href");
+            page.addTargetRequest(new Request(href, Request.Type.INFO,page.getRequest().getSite()));
             System.out.println("get link " + href);
         }
 
             String next = doc.select("a.next").attr("href");
             System.out.println("next " + next);
+            page.addTargetRequest(new Request(next, Request.Type.LIST,page.getRequest().getSite()));
     }
 
     @Override
