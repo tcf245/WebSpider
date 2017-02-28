@@ -5,6 +5,8 @@ import crawl.spider.Request;
 import crawl.spider.WorkCache;
 import crawl.util.BaiduMap;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,6 +23,8 @@ import java.util.regex.Pattern;
  * Created by BFD_303 on 2017/2/8.
  */
 public class ProcessDianpingInfo implements Processor{
+    private static final Log LOG = LogFactory.getLog(ProcessDianpingInfo.class);
+
     @Override
     public void process(Page page) {
         String html = page.getHtml();
@@ -34,6 +38,9 @@ public class ProcessDianpingInfo implements Processor{
         String reviewCount = "";
         String star = "";
         String time = "";
+
+        String lat = "";
+        String lng = "";
 
         Elements bread;
         List<String> cate = new ArrayList<>();
@@ -65,24 +72,16 @@ public class ProcessDianpingInfo implements Processor{
                 }
             }else{
                 name = getField("fullName",html);
-                name = getField("fullName",html);
-                name = getField("fullName",html);
             }
         }catch(NullPointerException e){
             e.printStackTrace();
         }
 
-//        System.out.println("city:" + city);
-//        System.out.println("name:" + name);
-//        System.out.println("address:" + address);
-//        System.out.println("avgPrice:" + avgPrice);
-//        System.out.println("reviewCount:" + reviewCount);
-//        System.out.println("star:" + star);
-//        System.out.println("time:" + time);
+        lat = getField("lat",html);
+        lng = getField("lng",html);
 
-        String lat = getField("lat",html);
-        String lng = getField("lng",html);
-
+        page.putField("lat",lat);
+        page.putField("lng",lng);
         page.putField("city",city);
         page.putField("name",name);
         page.putField("address",address);
@@ -92,12 +91,11 @@ public class ProcessDianpingInfo implements Processor{
         page.putField("time",time);
         page.putField("cate",cate);
 
-        System.out.println(WorkCache.gson.toJson(page.getFields()));
+        LOG.info("parse data : " + WorkCache.gson.toJson(page.getFields()));
     }
 
     public String getField(String field,String html){
         String reg = field + "[\" ]?:([^,})]+)";
-        System.out.println(reg);
         Pattern pattern = Pattern.compile(reg);
         Matcher matcher = pattern.matcher(html);
         if (matcher.find()){

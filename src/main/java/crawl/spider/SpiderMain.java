@@ -1,5 +1,7 @@
 package crawl.spider;
 
+import crawl.spider.pipeline.FilePipeline;
+import crawl.spider.process.ProcessDianpingList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
@@ -9,6 +11,7 @@ import java.net.URLEncoder;
 import static crawl.spider.WorkCache.*;
 
 /**
+ * 智联招聘
  * Created by tcf24 on 2016/11/24.
  */
 public class SpiderMain {
@@ -24,13 +27,13 @@ public class SpiderMain {
 
             //启动10 个工作线程
             for (int i = 0; i < 10; i++) {
-//                Thread t = new Thread(new ProcessZhilianList("worker-" + i,taskQueue));
+//                Thread t = new Thread(new ProcessDianpingList());
 //                t.start();
             }
 
             //启动保存线程
-//            Thread t = new Thread(new FilePipeline(result,"target/datasave.txt"));
-//            t.start();
+            Thread t = new Thread(new FilePipeline(WorkCache.LIST_RESULT,"etc/dianping-listdata.txt"));
+            t.start();
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -44,9 +47,9 @@ public class SpiderMain {
 
         for (int i = 1;i<= 492 ; i++){
             url = url.replace("@index@",i+"");
-            taskQueue.put(url);
+            TASK_QUEUE.put(url);
         }
-        LOG.info("get task number is : " + taskQueue.size());
+        LOG.info("get task number is : " + TASK_QUEUE.size());
     }
 
 }

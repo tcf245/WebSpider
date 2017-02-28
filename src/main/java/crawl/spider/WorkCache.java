@@ -14,7 +14,8 @@ public class WorkCache {
     public static Gson gson = new Gson();
     public static final String path = "etc/";
 
-    public static BlockingQueue<String> taskQueue = new LinkedBlockingDeque();
-    public static List<String> result = new CopyOnWriteArrayList<>();
+    public static BlockingQueue<String> TASK_QUEUE = new LinkedBlockingDeque();
+    public static List<String> INFO_RESULT = new CopyOnWriteArrayList<>();
+    public static List<String> LIST_RESULT = new CopyOnWriteArrayList<>();
 
 }
