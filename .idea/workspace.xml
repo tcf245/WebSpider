@@ -10,15 +10,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/main/java/crawl/spider/Spider.java" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dce46c68-d1d9-4db8-a9a5-25236f4ba777" name="Default" comment="Merge branch 'master' of github.com:tcf245/WebSpider&#10;&#10;# Conflicts:&#10;#&#9;.idea/libraries/Gradle__commons_lang_commons_lang_2_6.xml&#10;#&#9;build.gradle&#10;#&#9;selenium/build.gradle&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etc/chanpin.txt" afterPath="$PROJECT_DIR$/etc/chanpin.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crawl/spider/pipeline/KfkPipeline.java" afterPath="$PROJECT_DIR$/src/main/java/crawl/spider/pipeline/KfkPipeline.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crawl/spider/process/ProcessDianpingInfo.java" afterPath="$PROJECT_DIR$/src/main/java/crawl/spider/process/ProcessDianpingInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crawl/spider/process/ProcessDianpingList.java" afterPath="$PROJECT_DIR$/src/main/java/crawl/spider/process/ProcessDianpingList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crawl/util/BaiduMap.java" afterPath="$PROJECT_DIR$/src/main/java/crawl/util/BaiduMap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/crawl/util/KfkProducerUtil.java" afterPath="$PROJECT_DIR$/src/main/java/crawl/util/KfkProducerUtil.java" />
-    </list>
+    <list default="true" id="dce46c68-d1d9-4db8-a9a5-25236f4ba777" name="Default" comment="Merge branch 'master' of github.com:tcf245/WebSpider&#10;&#10;# Conflicts:&#10;#&#9;.idea/libraries/Gradle__commons_lang_commons_lang_2_6.xml&#10;#&#9;build.gradle&#10;#&#9;selenium/build.gradle&#10;" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -104,8 +96,8 @@
       <file leaf-file-name="ProcessDianpingInfo.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/crawl/spider/process/ProcessDianpingInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="58" column="28" lean-forward="false" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
+            <state relative-caret-position="-140">
+              <caret line="62" column="40" lean-forward="true" selection-start-line="62" selection-start-column="40" selection-end-line="62" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1608,12 +1600,12 @@
       <workItem from="1487751394736" duration="637000" />
       <workItem from="1487926186823" duration="641000" />
       <workItem from="1488187581798" duration="713000" />
-      <workItem from="1488268730160" duration="6963000" />
+      <workItem from="1488268730160" duration="7323000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="273044000" />
+    <option name="totallyTimeSpent" value="273404000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1625,7 +1617,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2112,8 +2104,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/crawl/spider/process/ProcessDianpingInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="58" column="28" lean-forward="false" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
+        <state relative-caret-position="-140">
+          <caret line="62" column="40" lean-forward="true" selection-start-line="62" selection-start-column="40" selection-end-line="62" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
