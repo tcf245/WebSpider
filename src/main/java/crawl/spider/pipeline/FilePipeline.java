@@ -39,11 +39,9 @@ public class FilePipeline implements Pipeline,Runnable{
                     continue;
                 }
 
-                synchronized (collection){
-                    FileUtils.writeLines(target,collection,true);
-                    LOG.info(collection.size() + " results has save to disk..  waiting 60 second ..");
-                    collection.clear();
-                }
+                FileUtils.writeLines(target,collection,true);
+                LOG.info(collection.size() + " results has save to disk..  waiting 60 second ..");
+                collection.clear();
 
                 Thread.sleep(60 * 1000);
             } catch (InterruptedException e) {

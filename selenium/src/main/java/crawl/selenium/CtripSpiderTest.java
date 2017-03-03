@@ -29,13 +29,13 @@ public class CtripSpiderTest {
 
     public static void main(String[] args){
         CtripSpiderTest instance =  new CtripSpiderTest();
-        String[] urls = {"http://hotels.ctrip.com/hotel/479549.html#ctm_ref=ctr_hp_sb_lst"
-        ,"http://hotels.ctrip.com/hotel/469193.html#ctm_ref=ctr_hp_sb_lst"
-        ,"http://hotels.ctrip.com/hotel/433881.html#ctm_ref=ctr_hp_sb_lst"
-        ,"http://hotels.ctrip.com/hotel/667517.html#ctm_ref=ctr_hp_sb_lst"
-        ,"http://hotels.ctrip.com/hotel/777007.html#ctm_ref=ctr_hp_sb_lst"};
+        String[] urls = {"http://hotels.ctrip.com/hotel/433881.html#ctm_ref=ctr_hp_sb_lst"
+        ,"http://hotels.ctrip.com/hotel/346283.html?isFull=F#ctm_ref=hod_sr_lst_dl_n_1_1"
+        ,"http://hotels.ctrip.com/hotel/469193.html#ctm_ref=hod_hp_sb_lst"};
 
-        instance.getCtripDiscountInfo(urls[4]);
+//        instance.getCtripDiscountInfo(urls[0]);
+//        instance.getCtripDiscountInfo(urls[1]);
+        instance.getCtripDiscountInfo(urls[2]);
 
 
 //        for (int i = 0; i < urls.length; i++) {
@@ -67,11 +67,10 @@ public class CtripSpiderTest {
             data.put("name",name.getText());
         }
 
-//        String[] dateD = {"2017-02-17","2017-02-18","2017-02-19","2017-02-20","2017-02-21"};
-        String[] dateD = {"2017-02-21"};
+        String[] dateD = {"2017-03-16"};
         for (String time:dateD){
             data.put("date",time);
-            if (!time.equals("2017-02-17")){
+            if (!time.equals("2017-03-01")){
                 WebElement date = driver.findElement(By.id("cc_txtCheckIn"));
                 if (date != null ){
 //                    date.click();
@@ -87,9 +86,6 @@ public class CtripSpiderTest {
             }
                 getPrice(data, driver,time);
         }
-
-
-
 
 //        //获取页面源码,提取参数信息
 //        String html = driver.getPageSource();
@@ -182,6 +178,7 @@ public class CtripSpiderTest {
                         m.put("roomType", e.findElement(By.cssSelector("a.room_unfold")).getText());
                         m.put("roomPrice", web.findElement(By.cssSelector("td span.base_price")).getText());
                         m.put("ratepolicy", web.getText());
+                        m.put("oldDriver", web.findElement(By.className("room_type_name")).getText());
 
 
                     items.add(m);
