@@ -33,7 +33,7 @@ public class Spider {
     private List<Pipeline> pipelines = new ArrayList<>();
     private List<Processor> processors = new ArrayList<>();
     private List<Request> startRequests = new ArrayList<>();
-    private List<String> result = new CopyOnWriteArrayList<>();
+    private List<String> result = WorkCache.INFO_RESULT;
 
     private boolean isDup = true;
     private int threadNum = 5;
@@ -50,26 +50,32 @@ public class Spider {
         init();
         LOG.info("Spider " + site.getName() + " started ..");
 
-        pipelines.forEach(p -> executorService.submit((Runnable) p));
+        pipelines.forEach(p -> executorService.execute((Runnable) p));
 
         if (threadNum <= 0){
             LOG.error("thread num should be more than 0 , it will be define as 1");
             threadNum = 1;
         }
-
         for (int i = 0;i < threadNum;i++){
-            executorService.submit(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     LOG.info(Thread.currentThread().getName() + "  started.. ");
                     while (true){
                         try {
+                            LOG.info("task size is : " + scheduler.size());
                             Request req = scheduler.poll();
                             if (req == null) continue;
                             LOG.info("get request url is : " + req.getUrl() + " and task queue size is : " + scheduler.size());
                             processRequest(req);
-                            if (isDup) scheduler.addDup(req);
+                            if (isDup) {
+                                scheduler.addDup(req);
+                            }
                         } catch (InterruptedException e) {
+                            continue;
+                        }catch (RuntimeException e) {
+                            continue;
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         if (site.getIntervals() != 0){
@@ -81,7 +87,7 @@ public class Spider {
                         }
                     }
                 }
-            });
+            }).start();
         }
         executorService.shutdown();
     }
@@ -94,12 +100,12 @@ public class Spider {
             this.scheduler = new QueueScheduler();
         }
         if (pipelines.size() == 0) {
-            pipelines.add(new FilePipeline(result,WorkCache.path + site.getName() + "/datasave.txt"));
+            pipelines.add(new FilePipeline(WorkCache.INFO_RESULT,WorkCache.path + site.getName() + "/datasave.txt"));
             pipelines.add(new FilePipeline(WorkCache.LIST_RESULT,WorkCache.path + site.getName() + "/listdata.txt"));
-            if (scheduler instanceof QueueScheduler){
-                BlockingQueue queue = ((QueueScheduler) scheduler).getQueue();
-                pipelines.add(new FilePipeline(((QueueScheduler) scheduler).getQueue(),WorkCache.path + site.getName() + "/tasksave.txt"));
-            }
+//            if (scheduler instanceof QueueScheduler){
+//                BlockingQueue queue = ((QueueScheduler) scheduler).getQueue();
+//                pipelines.add(new FilePipeline(((QueueScheduler) scheduler).getQueue(),WorkCache.path + site.getName() + "/tasksave.txt"));
+//            }
         }
         if (startRequests != null) {
             for (Request request : startRequests) {
@@ -114,16 +120,19 @@ public class Spider {
         return this;
     }
 
-    protected void processRequest(Request request) {
+    protected void processRequest (Request request) throws RuntimeException {
         Page page = downloader.download(request);
         if (page == null) {
+            int statusCode = page.getStatusCode();
+            if (statusCode != 404){
+                int times = request.getRetryTimes();
+                if (times < 3){
+                    scheduler.push(request);
+                    request.setRetryTimes(times++);
+                }
+            }
             throw new RuntimeException("unaccpetable response");
         }
-//        if (!site.getAcceptStatCode().contains(request.getExtra("statusCode"))) {
-//            scheduler.push(request);
-//            request.setRetryTimes(request.getRetryTimes() + 1);
-//            return;
-//        }
         LOG.info("page parser start.");
         getProcessor(request).process(page);
 

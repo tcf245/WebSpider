@@ -118,6 +118,5 @@ public class ProcessDianpingInfo implements Processor{
         page.setHtml(html);
 
         process.process(page);
-        process.getField("lng","");
     }
 }

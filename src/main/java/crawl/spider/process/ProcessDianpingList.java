@@ -34,7 +34,7 @@ public class ProcessDianpingList implements Processor{
             for (Element e : elements) {
                 Map<String,Object> item = new HashMap();
                 String href = "http://www.dianping.com" + e.select("div.txt div.tit a").attr("href");
-                page.addTargetRequest(new Request(href, Request.Type.INFO,page.getRequest().getSite()));
+//                page.addTargetRequest(new Request(href, Request.Type.INFO,page.getRequest().getSite()));
 
                 Element div = e.select("div.txt").first();
                 String name = div.select("div.tit a h4").text();
@@ -69,8 +69,9 @@ public class ProcessDianpingList implements Processor{
             e.printStackTrace();
         }
 
-
-        String next = doc.select("a.next").attr("href");
+        String next =  doc.select("a.next").attr("href");
+        if (next != null && !"".equals(next))
+            next = "http://www.dianping.com" + next;
         System.out.println("next " + next);
         page.addTargetRequest(new Request(next, Request.Type.LIST,page.getRequest().getSite()));
     }
@@ -81,20 +82,20 @@ public class ProcessDianpingList implements Processor{
     }
 
     public static void main(String[] args) throws IOException {
-        Site site = Site.me("Dianping").setDomain("http://www.dianping.com").setIntervals(100);
+        Site site = Site.me("Dianping").setDomain("http://www.dianping.com/").setIntervals(3000);
         Spider spider = new Spider(site,new ProcessDianpingList(),new ProcessDianpingInfo())
                 .setDup(true)
-                .setThreadNum(10);
+                .setThreadNum(5);
         loadStartTask(spider);
         spider.run();
 
     }
 
     public static void loadStartTask(Spider spider){
-        String url = "http://www.dianping.com/search/keyword/@index@/0_@keyword@";
         String[] keywords = {"必胜客","酒吧","麦当劳","肯德基","咖啡店","星巴克","KTV","酒店","写字楼","商场","居民区","学校"};
-        for (int i = 1; i < 100; i++) {
+        for (int i = 100; i < 200; i++) {
             for (String s : keywords){
+                String url = "http://www.dianping.com/search/keyword/@index@/0_@keyword@";
                 url = url.replace("@index@",i+"").replace("@keyword@", URLEncoder.encode(s));
                 spider.addStartRequest(url, Request.Type.LIST);
             }

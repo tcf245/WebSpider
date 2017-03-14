@@ -1,5 +1,6 @@
 package crawl.spider;
 
+import crawl.spider.downloader.HttpClientDownloader;
 import crawl.spider.pipeline.FilePipeline;
 import crawl.spider.process.ProcessDianpingList;
 import org.apache.commons.logging.Log;
@@ -17,27 +18,38 @@ import static crawl.spider.WorkCache.*;
 public class SpiderMain {
     private static final Log LOG = LogFactory.getLog(SpiderMain.class);
 
+    private static void swap(int a, int b){
+        int temp = a;
+        a = b;
+        b = temp;
+        System.out.printf("a = %d and b = %d",a,b);
+    }
     public static void main(String[] args) {
         String logPath = SpiderMain.class.getClassLoader().getResource("log4j.properties").getFile();
         PropertyConfigurator.configureAndWatch(logPath);
 
-        try {
-            //加载任务
-            getTask();
-
-            //启动10 个工作线程
-            for (int i = 0; i < 10; i++) {
-//                Thread t = new Thread(new ProcessDianpingList());
-//                t.start();
-            }
-
-            //启动保存线程
-            Thread t = new Thread(new FilePipeline(WorkCache.LIST_RESULT,"etc/dianping-listdata.txt"));
-            t.start();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        int a = 1;
+        int b = 2;
+        swap(a,b);
+        System.out.printf("a = %d and b = %d",a,b);
+        //
+//        try {
+//            //加载任务
+//            getTask();
+//
+//            //启动10 个工作线程
+//            for (int i = 0; i < 10; i++) {
+////                Thread t = new Thread(new ProcessDianpingList());
+////                t.start();
+//            }
+//
+//            //启动保存线程
+//            Thread t = new Thread(new FilePipeline(WorkCache.LIST_RESULT,"etc/dianping-listdata.txt"));
+//            t.start();
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static void getTask() throws InterruptedException {

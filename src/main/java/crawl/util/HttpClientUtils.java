@@ -86,7 +86,7 @@ public class HttpClientUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getHtml(String url,Map<String,String> headers) throws Exception {
+	public static String getHtml(String url,Map<String,String> headers) throws RuntimeException,Exception {
 		HttpClientBuilder httpBuilder = HttpClientBuilder.create();
 		httpBuilder.setUserAgent(ua);
 
@@ -99,9 +99,15 @@ public class HttpClientUtils {
 			}
 		}
 		HttpResponse response = client.execute(httpget);
-		System.out.println("request code : " + response.getStatusLine().getStatusCode());
+		int code = response.getStatusLine().getStatusCode();
+		System.out.println("request code : " + code);
+		int i = 1;
+		if (code == 403){
+			throw new RuntimeException("cookie invalid..");
+		}
+
 		HttpEntity en = response.getEntity();
-		return EntityUtils.toString(en);
+		return EntityUtils.toString(en,"utf-8");
 
 	}
 
