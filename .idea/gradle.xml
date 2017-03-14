@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/BaiduMap" />
             <option value="$PROJECT_DIR$/DianpingCrawler" />
             <option value="$PROJECT_DIR$/selenium" />
           </set>
