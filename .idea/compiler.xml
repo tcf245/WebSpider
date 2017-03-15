@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="BaiduMap_main" target="1.5" />
-      <module name="BaiduMap_test" target="1.5" />
+      <module name="BaiduMap_main" target="1.7" />
+      <module name="BaiduMap_test" target="1.7" />
       <module name="DianpingCrawler_main" target="1.5" />
       <module name="DianpingCrawler_test" target="1.5" />
       <module name="selenium_main" target="1.8" />

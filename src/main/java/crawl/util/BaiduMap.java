@@ -65,4 +65,12 @@ public class BaiduMap {
         }
         return "g41LfmKNt41p7a0WvDoYEW5awKXlxGI0";
     }
+
+    public static void main(String[] args) throws Exception {
+        for (int i = 0; i < 7000; i++) {
+            String url = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption&output=json&address=%E6%B3%B0%E5%B7%9E%E9%87%91%E5%BA%A7&city=%E6%B3%B0%E5%B7%9E%E5%B8%82&ak=UBwgKsGBRGOouiMumvwRD6aMrCnfojVF";
+            String content = HttpClientUtils.getHtml(url,null);
+            System.out.println(i + " -> " + content);
+        }
+    }
 }
