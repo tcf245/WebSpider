@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BaiduMap/BaiduMap.iml" filepath="$PROJECT_DIR$/.idea/modules/BaiduMap/BaiduMap.iml" group="BaiduMap" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BaiduMap/BaiduMap_main.iml" filepath="$PROJECT_DIR$/.idea/modules/BaiduMap/BaiduMap_main.iml" group="BaiduMap" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BaiduMap/BaiduMap_test.iml" filepath="$PROJECT_DIR$/.idea/modules/BaiduMap/BaiduMap_test.iml" group="BaiduMap" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DianpingCrawler/DianpingCrawler.iml" filepath="$PROJECT_DIR$/.idea/modules/DianpingCrawler/DianpingCrawler.iml" group="DianpingCrawler" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebSpider.iml" filepath="$PROJECT_DIR$/.idea/modules/WebSpider.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WebSpider_main.iml" filepath="$PROJECT_DIR$/.idea/modules/WebSpider_main.iml" group="WebSpider" />
